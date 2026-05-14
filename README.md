@@ -1,10 +1,22 @@
 # network-monitor
 
-Monitor local simples para ver se o basico esta vivo.
+Esse repo nasceu porque as vezes eu queria saber se o basico da rede estava vivo antes de abrir varias abas e testar tudo na mao.
 
-Ele checa ping, DNS e HTTP e abre uma pagina pequena no navegador. Fiz para rodar na minha maquina, sem conta, sem banco, sem dependencia.
+Ele checa tres coisas simples: `ping`, DNS e HTTP. Depois mostra o resultado numa pagina local e tambem em JSON.
 
-## uso
+Nao e um Zabbix, Prometheus ou coisa desse tamanho. E um monitor pequeno para treinar Python, HTTP local e diagnostico basico.
+
+## o que tem aqui
+
+- `monitor.py`: servidor local em Python
+- checagem de ping
+- checagem de DNS
+- checagem HTTP
+- pagina HTML gerada pelo proprio script
+- endpoint JSON em `/api/status`
+- zero dependencia externa de Python
+
+## rodando
 
 ```bash
 python monitor.py
@@ -16,17 +28,26 @@ Depois abre:
 http://127.0.0.1:5176
 ```
 
-Tambem tem JSON:
+Tambem da para ver o JSON direto:
 
 ```text
 http://127.0.0.1:5176/api/status
 ```
 
-## notas
+Se quiser mudar host ou porta:
 
-- feito para uso local
-- usa bibliotecas padrao do Python
-- o ping depende do comando `ping` do sistema
+```bash
+python monitor.py --host 127.0.0.1 --port 5177
+```
+
+## o que eu treinei
+
+- `http.server`
+- servidor local com `ThreadingHTTPServer`
+- resposta HTML e JSON no mesmo script
+- `socket.getaddrinfo` para DNS
+- `urllib.request` para HTTP
+- uso do `ping` do sistema via Python
 
 ## limites
 
@@ -36,13 +57,14 @@ http://127.0.0.1:5176/api/status
 - nao substitui monitoramento de verdade
 - o HTML e gerado direto no Python para manter tudo em um arquivo
 
-## coisas para melhorar depois
+## o que falta
 
 - permitir configurar alvos por argumento ou arquivo simples
 - adicionar intervalo de atualizacao na pagina
 - separar melhor HTML/CSS se o projeto crescer
 - testar os checks sem depender de rede real
+- mostrar tempo de resposta com mais detalhe
 
-## anotacoes de aprendizado
+## nota
 
 Esse repo e mais um exercicio de Python padrao do que uma ferramenta completa. A parte interessante foi juntar `ping`, DNS, HTTP e um servidor local pequeno sem framework.
